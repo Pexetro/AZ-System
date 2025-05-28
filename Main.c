@@ -8,23 +8,25 @@ int cadastro(int *x, int quantidade[100], char nomeItem[100][120], char descrica
         return *x;
     }
 
-    printf("Qual o item quer cadastrar?\n");
-    fgets(nomeItem[*x], 120, stdin);
-    nomeItem[*x][strcspn(nomeItem[*x], "\n")] = '\0';
+    do {
+        printf("Qual o item quer cadastrar?\n");
+        fgets(nomeItem[*x], 120, stdin);
+        nomeItem[*x][strcspn(nomeItem[*x], "\n")] = '\0';
+        
+        if (strlen(nomeItem[*x]) == 0) {
+            printf("Nome do item inválido. Por favor, digite um nome.\n");
+        }
+    } while (strlen(nomeItem[*x]) == 0);
 
-    if (strlen(nomeItem[*x]) == 0) {
-        printf("Nome do item inválido. Este item não pode ser cadastrado.\n");
-        return *x;
-    }
+    do {
+        printf("Qual a quantidade?\n");
+        scanf("%d", &quantidade[*x]);
+        getchar();
 
-    printf("Qual a quantidade?\n");
-    scanf("%d", &quantidade[*x]);
-    getchar();
-
-    if (quantidade[*x] <= 0) {
-        printf("Quantidade inválida. Não é possível adicionar 0 ou menos unidades.\n----------------------------------\n");
-        return *x;
-    }
+        if (quantidade[*x] <= 0) {
+            printf("Quantidade inválida. Não é possível adicionar 0 ou menos unidades. Por favor, digite uma quantidade válida.\n");
+        }
+    } while (quantidade[*x] <= 0); 
 
     printf("Descrição:\n");
     fgets(descricao[*x], 220, stdin);
@@ -40,7 +42,6 @@ void exibir(int x, char nomeItem[100][120], int quantidade[100], char descricao[
         printf("Nenhum item cadastrado ainda.\n----------------------------------\n");
         return;
     }
-
     for (int i = 0; i < x; i++) {
         printf("\nItem %d:\n", i + 1);
         printf("Nome: %s\n", nomeItem[i]);
@@ -52,17 +53,17 @@ void exibir(int x, char nomeItem[100][120], int quantidade[100], char descricao[
 
 void excluir(int *x, char nomeItem[100][120], int quantidade[100], char descricao[100][220]) {
     int deleteId = 0;
-
+    
     if (*x == 0) {
         printf("Nenhum item para excluir.\n----------------------------------\n");
         return;
     }
-
+    
     printf("----------------------------------\nItens cadastrados:\n");
     for (int i = 0; i < *x; i++) {
         printf("[%d] %s\n", i + 1, nomeItem[i]);
     }
-
+    
     printf("\nDigite o ID do item a ser deletado: ");
     scanf("%d", &deleteId);
     getchar();
@@ -71,22 +72,22 @@ void excluir(int *x, char nomeItem[100][120], int quantidade[100], char descrica
         printf("ID inválido!\n----------------------------------\n");
         return;
     }
-
+    
     deleteId--;
-
+    
     for (int i = deleteId; i < *x - 1; i++) {
         strcpy(nomeItem[i], nomeItem[i + 1]);
         strcpy(descricao[i], descricao[i + 1]);
         quantidade[i] = quantidade[i + 1];
     }
-
     (*x)--;
     printf("Item removido com sucesso!\n----------------------------------\n");
 }
 
 int main() {
-    int x = 0; // número de itens
+    int x = 0;
     int escolha;
+
     char nomeItem[100][120];
     char descricao[100][220];
     int quantidade[100];
@@ -105,15 +106,19 @@ int main() {
             case 1:
                 cadastro(&x, quantidade, nomeItem, descricao);
                 break;
+
             case 2:
                 exibir(x, nomeItem, quantidade, descricao);
                 break;
+
             case 3:
                 excluir(&x, nomeItem, quantidade, descricao);
                 break;
+
             case 4:
                 printf("Saindo do sistema...\n----------------------------------\n");
                 break;
+
             default:
                 printf("Escolha inválida, tente novamente.\n----------------------------------\n");
                 break;
