@@ -85,7 +85,6 @@ void excluir(int *x, char nomeItem[100][120], int quantidade[100], char descrica
 int main() {
     int x = 0; // número de itens
     int escolha;
-
     char nomeItem[100][120];
     char descricao[100][220];
     int quantidade[100];
