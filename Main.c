@@ -49,6 +49,62 @@ void exibir(int x, char nomeItem[100][120], int quantidade[100], char descricao[
     printf("----------------------------------\n");
 }
 
+void editar(int *x, char nomeItem[100][120], int quantidade[100], char descricao[100][220]) {
+    char nomeParaEditar[120];
+    int escolha;
+    int encontrado = 0;
+    int indiceItem = -1;
+
+    printf("Digite o nome do item a ser editado: ");
+    scanf("%119s", nomeParaEditar);
+    getchar();
+
+    for (int i = 0; i < *x; i++) {
+        if (strcmp(nomeParaEditar, nomeItem[i]) == 0) {
+            encontrado = 1;
+            indiceItem = i;
+            break;
+        }
+    }
+
+    if (encontrado) {
+        printf("\n--O que deseja alterar?-- \n");
+        printf("[1] Nome \n");
+        printf("[2] Quantidade \n");
+        printf("[3] Descricao \n");
+        printf("Escolha: ");
+        scanf("%d", &escolha);
+        getchar();
+
+        switch (escolha) {
+            case 1:
+                printf("Novo nome do item: ");
+                scanf("%119s", nomeItem[indiceItem]);
+                getchar();
+                printf("O item agora se chama: %s\n", nomeItem[indiceItem]);
+                break;
+            case 2:
+                printf("Nova quantidade do item: ");
+                scanf("%d", &quantidade[indiceItem]);
+                getchar();
+                printf("A nova quantidade é: %d\n", quantidade[indiceItem]);
+                break;
+            case 3:
+                printf("Nova descrição do item: ");
+                scanf("%219[^\n]", descricao[indiceItem]);
+                getchar();
+                printf("A nova descrição é: %s\n", descricao[indiceItem]);
+                break;
+            default:
+                printf("Opção inválida.\n");
+                break;
+        }
+    } else {
+        printf("Sem correspondência. Item não encontrado.\n");
+    }
+}
+
+
 void excluir(int *x, char nomeItem[100][120], int quantidade[100], char descricao[100][220]) {
     int deleteId = 0;
     
@@ -93,8 +149,9 @@ int main() {
         printf("\n--MENU DO SISTEMA-- \n");
         printf("[1] Cadastrar item \n");
         printf("[2] Listar itens \n");
-        printf("[3] Excluir itens \n");
-        printf("[4] Sair \n");
+        printf("[3] Editar itens \n");
+        printf("[4] Excluir itens \n");
+        printf("[5] Sair \n");
         printf("Escolha: ");
         scanf("%d", &escolha);
         getchar();
@@ -109,18 +166,19 @@ int main() {
                 break;
 
             case 3:
+                editar(&x, nomeItem, quantidade, descricao);
+                break;
+            case 4:
                 excluir(&x, nomeItem, quantidade, descricao);
                 break;
-
-            case 4:
+            case 5:
                 printf("Saindo do sistema...\n----------------------------------\n");
                 break;
-
             default:
                 printf("Escolha inválida, tente novamente.\n----------------------------------\n");
                 break;
         }
-    } while (escolha != 4);
+    } while (escolha != 5);
 
     return 0;
 }
