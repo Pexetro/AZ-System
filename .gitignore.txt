@@ -1,0 +1,3 @@
+# Ignorar a pasta de saída
+/output/
+
